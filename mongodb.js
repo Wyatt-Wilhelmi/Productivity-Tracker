@@ -1,11 +1,10 @@
 
 const { MongoClient, ServerApiVersion } = require('mongodb');
-const { MONGODB_URL } = require('./config.js');
 
 
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
-const client = new MongoClient(MONGODB_URL, {
+const client = new MongoClient(process.env.MONGODB_URL, {
   serverApi: {
     version: ServerApiVersion.v1,
     strict: true,
