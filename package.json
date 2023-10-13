@@ -18,5 +18,8 @@
   "homepage": "https://github.com/Wyatt-Wilhelmi/Productivity-Tracker#readme",
   "devDependencies": {
     "tailwindcss": "^3.3.3"
+  },
+  "dependencies": {
+    "mongodb": "^6.1.0"
   }
 }
