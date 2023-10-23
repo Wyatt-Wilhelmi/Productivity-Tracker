@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;900&display=swap" rel="stylesheet">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.1/dist/cdn.min.js"></script>
+    <script src="./script.js"></script>
     <link rel="stylesheet" href="./dist/output.css">
 </head>
 <body>
@@ -41,7 +42,7 @@
         <!-- Rest of your content -->
         <div class="mx-auto max-w-3xl">
             <div class="flex flex-wrap flex-col justify-center gap-4 px-1 sm:px-4 w-full xl:gap-8">
-                <div x-data="{mondayCaret: false}" @click="mondayCaret = !mondayCaret" x-on:click.outside="mondayCaret = false" class="bg-white dark:bg-gray-500 dark:text-slate-50 shadow-md hover:shadow-lg rounded-lg p-4 xl:p-6 font-Lato">
+                <div x-data="{mondayCaret: false, addingItem: false}"  @click="mondayCaret = !mondayCaret" x-on:click.outside="mondayCaret = false" class="bg-white dark:bg-gray-500 dark:text-slate-50 shadow-md hover:shadow-lg rounded-lg p-4 xl:p-6 font-Lato">
                     <div class="flex justify-between">
                         <h2 class="text-lg md:text-2xl lg:text-3xl xl:text-4xl font-black mb-2">Monday</h2>
                         <a>
@@ -50,13 +51,24 @@
                             </svg>
                         </a>
                     </div>
-                    <div x-show="mondayCaret" x-transition class="flex justify-center">
-                        <button>
-                            <svg  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 dark:text-slate-50 h-6">
+                    <div x-data="checklistComponent()" @click.stop x-show="mondayCaret" x-transition class="flex justify-center items-center flex-col"> <!-- Added flex-col for vertical stacking -->
+                        <ul id="checklistMonday" x-ref="checklistMonday">
+                            <!--item.id should replace item when database is added-->
+                            <template x-for="item in items" :key="item">
+                                <li >
+                                    <input type="checkbox" class="form-checkbox" />
+                                    <span class="text-gray-900" x-text="item.text"></span> 
+                                </li>
+                            </template>
+                        </ul>
+                        <input x-show="addingItem" class="w-4/6 text-center text border-gray-900 border-2 rounded-md"  type="text" x-model="newItemText" placeholder="Type new item here" />
+                        <button x-show="!addingItem" id="addItemButtonMonday" @click="addingItem = !addingItem"  class="border-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 dark:text-slate-50 h-6">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                         </button>
-                    </div>                                                       
+                        <button x-show="addingItem" @click.stop="addItem" @click="addingItem = !addingItem">Done</button>
+                    </div>
                 </div>
                 <div x-data="{tuesdayCaret: false}" @click="tuesdayCaret = !tuesdayCaret" x-on:click.outside="tuesdayCaret = false" class="bg-white dark:bg-gray-500 dark:text-slate-50 shadow-md hover:shadow-lg rounded-lg p-4 xl:p-6 font-Lato">
                     <div class="flex justify-between">
@@ -163,6 +175,5 @@
             </div>
         </div>
     </div>
-    <script defer src="./script.js"></script>
 </body>
 </html>

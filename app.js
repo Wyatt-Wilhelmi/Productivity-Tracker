@@ -21,6 +21,11 @@ mongoose.connect(process.env.URI, { useNewUrlParser: true, useUnifiedTopology: t
 
 // Start the server
 const port = 3000; // or any other available port
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
+app.listen(port, () => {console.log(`Server is running on port ${port}`);});
+
+// server.close((err) => {
+//   console.log('Server closed')
+//   process.exit(err ? 1 : 0)
+// })
+
+
