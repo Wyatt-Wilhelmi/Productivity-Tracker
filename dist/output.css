@@ -534,26 +534,6 @@ video {
   --tw-backdrop-sepia:  ;
 }
 
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border-width: 0;
-}
-
-.pointer-events-none {
-  pointer-events: none;
-}
-
-.relative {
-  position: relative;
-}
-
 .mx-1 {
   margin-left: 0.25rem;
   margin-right: 0.25rem;
@@ -572,10 +552,6 @@ video {
   display: flex;
 }
 
-.hidden {
-  display: none;
-}
-
 .h-6 {
   height: 1.5rem;
 }
@@ -584,20 +560,16 @@ video {
   height: 2rem;
 }
 
-.h-4 {
-  height: 1rem;
-}
-
-.h-5 {
-  height: 1.25rem;
-}
-
 .min-h-screen {
   min-height: 100vh;
 }
 
 .w-1\/3 {
   width: 33.333333%;
+}
+
+.w-4\/6 {
+  width: 66.666667%;
 }
 
 .w-6 {
@@ -610,22 +582,6 @@ video {
 
 .w-full {
   width: 100%;
-}
-
-.w-2\/4 {
-  width: 50%;
-}
-
-.w-4\/6 {
-  width: 66.666667%;
-}
-
-.w-4 {
-  width: 1rem;
-}
-
-.w-5 {
-  width: 1.25rem;
 }
 
 .max-w-3xl {
@@ -664,12 +620,6 @@ video {
   gap: 1rem;
 }
 
-.space-x-3 > :not([hidden]) ~ :not([hidden]) {
-  --tw-space-x-reverse: 0;
-  margin-right: calc(0.75rem * var(--tw-space-x-reverse));
-  margin-left: calc(0.75rem * calc(1 - var(--tw-space-x-reverse)));
-}
-
 .rounded-full {
   border-radius: 9999px;
 }
@@ -686,18 +636,9 @@ video {
   border-width: 2px;
 }
 
-.border {
-  border-width: 1px;
-}
-
 .border-gray-900 {
   --tw-border-opacity: 1;
   border-color: rgb(17 24 39 / var(--tw-border-opacity));
-}
-
-.border-gray-300 {
-  --tw-border-opacity: 1;
-  border-color: rgb(209 213 219 / var(--tw-border-opacity));
 }
 
 .bg-stone-200 {
@@ -750,19 +691,9 @@ video {
   font-weight: 900;
 }
 
-.text-gray-700 {
-  --tw-text-opacity: 1;
-  color: rgb(55 65 81 / var(--tw-text-opacity));
-}
-
 .text-gray-900 {
   --tw-text-opacity: 1;
   color: rgb(17 24 39 / var(--tw-text-opacity));
-}
-
-.text-white {
-  --tw-text-opacity: 1;
-  color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
 .shadow-md {
@@ -781,24 +712,6 @@ video {
 
 *{
   /* border: red solid 1px; */
-}
-
-.checked\:block:checked {
-  display: block;
-}
-
-.checked\:border-transparent:checked {
-  border-color: transparent;
-}
-
-.checked\:bg-blue-500:checked {
-  --tw-bg-opacity: 1;
-  background-color: rgb(59 130 246 / var(--tw-bg-opacity));
-}
-
-.focus-within\:border-blue-500:focus-within {
-  --tw-border-opacity: 1;
-  border-color: rgb(59 130 246 / var(--tw-border-opacity));
 }
 
 .hover\:bg-gray-900:hover {

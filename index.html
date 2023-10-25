@@ -51,17 +51,18 @@
                             </svg>
                         </a>
                     </div>
-                    <div x-data="checklistComponent()" @click.stop x-show="mondayCaret" x-transition class="flex justify-center items-center flex-col"> <!-- Added flex-col for vertical stacking -->
+                    <!-- x-data="checklistComponent(Monday)" -->
+                    <div  @click.stop x-show="mondayCaret" x-transition class="flex justify-center items-center flex-col"> <!-- Added flex-col for vertical stacking -->
                         <ul id="checklistMonday" x-ref="checklistMonday">
                             <!--item.id should replace item when database is added-->
-                            <template x-for="item in items" :key="item">
+                            <!-- <template x-for="item in items" :key="item">
                                 <li >
                                     <input type="checkbox" class="form-checkbox" />
                                     <span class="text-gray-900" x-text="item.text"></span> 
                                 </li>
-                            </template>
+                            </template> -->
                         </ul>
-                        <input x-show="addingItem" class="w-4/6 text-center text border-gray-900 border-2 rounded-md"  type="text" x-model="newItemText" placeholder="Type new item here" />
+                        <!-- <input x-show="addingItem" class="w-4/6 text-center text border-gray-900 border-2 rounded-md"  type="text" x-model="newItemText" placeholder="Type new item here" /> -->
                         <button x-show="!addingItem" id="addItemButtonMonday" @click="addingItem = !addingItem"  class="border-2">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 dark:text-slate-50 h-6">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -175,5 +176,6 @@
             </div>
         </div>
     </div>
+    <script src="./post.js"></script>
 </body>
 </html>
