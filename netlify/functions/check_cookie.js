@@ -28,8 +28,6 @@ exports.handler = async (event, context) => {
     const { cookieValue } = JSON.parse(event.body);
 
     let newCookieValue = cookieValue;
-
-    
     if (!newCookieValue) {
       newCookieValue = uuidv4();
     }
@@ -40,7 +38,10 @@ exports.handler = async (event, context) => {
       const newUser = new User({ cookie: newCookieValue });
       await newUser.save();
       return { 
-        statusCode: 200, 
+        statusCode: 200,
+        headers: {
+          'Set-Cookie': `userCookie=${newCookieValue}; HttpOnly; Path=/; Max-Age=31536000`, // Set for 1 year
+        },
         body: JSON.stringify({ message: "New user created", cookieValue: newCookieValue })
       };
     }
