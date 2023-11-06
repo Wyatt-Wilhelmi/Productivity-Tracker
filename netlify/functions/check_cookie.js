@@ -24,6 +24,8 @@ exports.handler = async (event, context) => {
     });
   }
 
+  
+
   try {
     const { cookieValue } = JSON.parse(event.body);
 
