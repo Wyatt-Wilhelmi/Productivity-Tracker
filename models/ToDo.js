@@ -14,7 +14,10 @@ const TodoSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
-  // other fields...
+  user_id: {
+    type: mongoose.SchemaTypes.ObjectId,
+    required: true
+  }
 });
 
 // Compile and export the model
