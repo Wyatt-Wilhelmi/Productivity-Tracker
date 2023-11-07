@@ -39,10 +39,11 @@ exports.handler = async (event, context) => {
     if (!user) {
       const newUser = new User({ cookie: newCookieValue });
       await newUser.save();
-      return { 
+      return {
         statusCode: 200,
         headers: {
-          'Set-Cookie': `userCookie=${newCookieValue}; HttpOnly; Path=/; Max-Age=31536000`, // Set for 1 year
+          'Set-Cookie': `userCookie=${newCookieValue}; HttpOnly; Path=/; Max-Age=31536000`,
+          'Strict-Transport-Security': 'max-age=31536000; includeSubDomains'
         },
         body: JSON.stringify({ message: "New user created", cookieValue: newCookieValue })
       };
