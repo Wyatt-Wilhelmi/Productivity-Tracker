@@ -41,3 +41,5 @@ function sendPostRequest() {
 }
 
 window.onload = sendPostRequest;
+
+//Edit, update, delete Handler here
