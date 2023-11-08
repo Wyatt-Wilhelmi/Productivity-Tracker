@@ -21,14 +21,17 @@ export async function handler(event, context) {
   }
 
   if (connection.readyState !== 1) {
-    await connect(MONGODB_URI, { dbName: MONGODB_DATABASE, useNewUrlParser: true, useUnifiedTopology: true })
-    .catch(err => {
+    try {
+      await connect(MONGODB_URI, {
+        dbName: MONGODB_DATABASE,
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+      });
+    } catch (err) {
       console.error('Error connecting to the database: ', err);
       return { statusCode: 500, body: 'Database connection error' };
-    });
+    }
   }
-
-  
 
   try {
     const { cookieValue } = JSON.parse(event.body);

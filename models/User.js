@@ -1,4 +1,6 @@
-import { Schema, model } from 'mongoose';
+import mongoose from 'mongoose';
+
+const { Schema, model } = mongoose;
 
 // Define your schema
 const UserSchema = new Schema({
@@ -6,7 +8,6 @@ const UserSchema = new Schema({
     type: String,
     required: true
   }
-  // other fields...
 });
 
 // Compile and export the model
