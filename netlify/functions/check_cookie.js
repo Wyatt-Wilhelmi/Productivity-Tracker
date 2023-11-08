@@ -46,7 +46,7 @@ export async function handler(event, context) {
       return {
         statusCode: 201,
         headers: {
-          'Strict-Transport-Security': 'max-age=31536000; includeSubDomains; secure'
+          'Strict-Transport-Security': 'max-age=31536000; includeSubDomains'
         },
         body: JSON.stringify({message: "newCookieValue", cookieValue: newCookieValue})
       };
