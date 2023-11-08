@@ -1,14 +1,12 @@
-import mongoose, { Schema, model as mongooseModel } from 'mongoose';
-import { v4 as uuidv4 } from 'uuid';
-import dotenv from 'dotenv';
-import User from '../../models/User.js'; // Assuming User.js uses ES6 export
+const mongoose = require('mongoose');
+const { v4: uuidv4 } = require('uuid');
+require('dotenv').config();
 
-dotenv.config();
+const User = require('../../models/User.js');
 
-const { connection, connect } = mongoose;
+const { connect, connection } = mongoose;
 
-
-export async function handler(event, context) {
+module.exports.handler = async function(event, context) {
   if (event.httpMethod !== "POST") {
     return { statusCode: 405, body: "Method Not Allowed" };
   }
@@ -49,7 +47,7 @@ export async function handler(event, context) {
       return {
         statusCode: 201,
         headers: {
-          'Strict-Transport-Security': 'max-age=31536000; includeSubDomains'
+          'Strict-Transport-Security': 'max-age=31536000; includeSubDomains; secure'
         },
         body: JSON.stringify({message: "newCookieValue", cookieValue: newCookieValue})
       };

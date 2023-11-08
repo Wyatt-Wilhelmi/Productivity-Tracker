@@ -1,14 +1,13 @@
-import mongoose from 'mongoose';
-
-const { Schema, model } = mongoose;
+const mongoose = require('mongoose');
 
 // Define your schema
-const UserSchema = new Schema({
+const UserSchema = new mongoose.Schema({
   cookie: {
     type: String,
     required: true
   }
+  // other fields...
 });
 
 // Compile and export the model
-export default model('User', UserSchema, 'Users');
+module.exports = mongoose.model('User', UserSchema, 'Users');
