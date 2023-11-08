@@ -1,7 +1,7 @@
-const mongoose = require('mongoose');
+import { Schema, model } from 'mongoose';
 
 // Define your schema
-const UserSchema = new mongoose.Schema({
+const UserSchema = new Schema({
   cookie: {
     type: String,
     required: true
@@ -10,4 +10,4 @@ const UserSchema = new mongoose.Schema({
 });
 
 // Compile and export the model
-module.exports = mongoose.model('User', UserSchema, 'Users');
+export default model('User', UserSchema, 'Users');

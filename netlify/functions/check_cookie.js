@@ -1,10 +1,14 @@
-const mongoose = require('mongoose');
-const { v4: uuidv4 } = require('uuid');
-require('dotenv').config();
+import mongoose, { Schema, model as mongooseModel } from 'mongoose';
+import { v4 as uuidv4 } from 'uuid';
+import dotenv from 'dotenv';
+import User from '../../models/User.js'; // Assuming User.js uses ES6 export
 
-const User = require('../../models/User.js');
+dotenv.config();
 
-exports.handler = async (event, context) => {
+const { connection, connect } = mongoose;
+
+
+export async function handler(event, context) {
   if (event.httpMethod !== "POST") {
     return { statusCode: 405, body: "Method Not Allowed" };
   }
@@ -16,8 +20,8 @@ exports.handler = async (event, context) => {
     return { statusCode: 500, body: 'MONGODB_URI is not defined' };
   }
 
-  if (mongoose.connection.readyState !== 1) {
-    await mongoose.connect(MONGODB_URI, { dbName: MONGODB_DATABASE, useNewUrlParser: true, useUnifiedTopology: true })
+  if (connection.readyState !== 1) {
+    await connect(MONGODB_URI, { dbName: MONGODB_DATABASE, useNewUrlParser: true, useUnifiedTopology: true })
     .catch(err => {
       console.error('Error connecting to the database: ', err);
       return { statusCode: 500, body: 'Database connection error' };
@@ -40,21 +44,19 @@ exports.handler = async (event, context) => {
       const newUser = new User({ cookie: newCookieValue });
       await newUser.save();
       return {
-        statusCode: 200,
+        statusCode: 201,
         headers: {
-          'Set-Cookie': `userCookie=${newCookieValue}; HttpOnly; Path=/; Max-Age=31536000`,
-          'Strict-Transport-Security': 'max-age=31536000; includeSubDomains'
+          'Strict-Transport-Security': 'max-age=31536000; includeSubDomains; secure'
         },
-        body: JSON.stringify({ message: "New user created", cookieValue: newCookieValue })
+        body: JSON.stringify({message: "newCookieValue", cookieValue: newCookieValue})
       };
     }
 
     return { 
-      statusCode: 200, 
-      body: JSON.stringify({ message: "User already exists", cookieValue: newCookieValue }) 
+      statusCode: 200 
     };
 
   } catch (e) {
     return { statusCode: 500, body: e.message };
   }
-};
+}

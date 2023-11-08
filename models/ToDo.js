@@ -1,7 +1,7 @@
-const mongoose = require('mongoose');
+import { Schema, SchemaTypes, model } from 'mongoose';
 
 // Define your schema
-const TodoSchema = new mongoose.Schema({
+const TodoSchema = new Schema({
   text: {
     type: String,
     required: true
@@ -15,10 +15,10 @@ const TodoSchema = new mongoose.Schema({
     default: false
   },
   user_id: {
-    type: mongoose.SchemaTypes.ObjectId,
+    type: SchemaTypes.ObjectId,
     required: true
   }
 });
 
 // Compile and export the model
-module.exports = mongoose.model('Todo', TodoSchema);
+export default model('Todo', TodoSchema);

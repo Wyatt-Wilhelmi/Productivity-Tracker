@@ -9,35 +9,34 @@ function setCookie(name, value, days) {
         date.setTime(date.getTime() + (days*24*60*60*1000));
         expires = "; expires=" + date.toUTCString();
     }
-    document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+    document.cookie = name + "=" + (value || "")  + expires + ";secure;path=/";
 }
 
-function sendPostRequest() {
+async function sendPostRequest() {
     const url = 'https://sweet-panda-99d8a9.netlify.app/.netlify/functions/check_cookie';
+    const cookieValue = getCookie('myCookieName');
+    const payload = { cookieValue: cookieValue };
 
-    let cookieValue = getCookie('myCookieName');
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        });
 
-    const payload = {
-        cookieValue: cookieValue 
-    };
-
-    fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(payload)
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log('Response:', data);
-        if (data.message === "New user created") {
-            setCookie('myCookieName', data.cookieValue, 365); // Set the new cookie on the client side
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
-    })
-    .catch(error => {
+
+        if (response.status === 201) {
+            const data = await response.json();
+            setCookie('myCookieName', data.cookieValue, 365);
+        }
+    } catch (error) {
         console.error('Error:', error);
-    });
+    }
 }
 
 window.onload = sendPostRequest;
