@@ -1,4 +1,6 @@
-import { Schema, SchemaTypes, model } from 'mongoose';
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+const SchemaTypes = mongoose.SchemaTypes;
 
 // Define your schema
 const TodoSchema = new Schema({
@@ -15,10 +17,11 @@ const TodoSchema = new Schema({
     default: false
   },
   user_id: {
-    type: SchemaTypes.ObjectId,
+    type: String,
     required: true
   }
 });
 
 // Compile and export the model
-export default model('Todo', TodoSchema);
+module.exports = mongoose.model('Todo', TodoSchema, 'ToDoList');
+

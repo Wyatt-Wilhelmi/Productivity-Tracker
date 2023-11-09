@@ -1,6 +1,20 @@
-export function getCookie(name) {
-    let value = "; " + document.cookie;
-    let parts = value.split("; " + name + "=");
-    if (parts.length === 2) return parts.pop().split(";").shift();
-    return null;
+export class Person{
+    constructor(userid = {}){
+        this.userid = userid;
+    }
+
+    /**
+     * @param {any} userid
+     */
+    set setPersonUserID(userid){
+        this.userid = userid;
+    }
+
+    get getPersonUserID(){
+        return this.userid;
+    }
+}
+
+export class ToDoListItems{
+    
 }

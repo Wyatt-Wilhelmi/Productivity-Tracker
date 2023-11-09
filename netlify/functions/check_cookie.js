@@ -44,17 +44,20 @@ module.exports.handler = async function(event, context) {
     if (!user) {
       const newUser = new User({ cookie: newCookieValue });
       await newUser.save();
+      const newUserID = await User.findOne({cookie: newCookieValue}, '_id');
       return {
         statusCode: 201,
         headers: {
           'Strict-Transport-Security': 'max-age=31536000; includeSubDomains; secure'
         },
-        body: JSON.stringify({message: "newCookieValue", cookieValue: newCookieValue})
+        body: JSON.stringify({userID: newUserID, cookieValue: newCookieValue})
       };
     }
 
+    const newUserID = await User.findOne({cookie: newCookieValue}, '_id');
     return { 
-      statusCode: 200 
+      statusCode: 200,
+      body: JSON.stringify({userID: newUserID})
     };
 
   } catch (e) {
