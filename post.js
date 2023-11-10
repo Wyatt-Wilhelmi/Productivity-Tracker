@@ -1,7 +1,9 @@
 // in your other file
 import {Person} from './utils.js';
+import { ToDoListItems } from './utils.js';
 
 let newPerson = new Person();
+let newToDoListItems = new Array(new ToDoListItems());
 
 function getCookie(name) {
     let value = "; " + document.cookie;
@@ -60,7 +62,7 @@ async function userAuthentication() {
 }
 
 async function requestDatabaseItems(){
-    const url = 'http://localhost:8888/.netlify/functions/database_items';
+    const url = 'https://sweet-panda-99d8a9.netlify.app/.netlify/functions/database_items';
     const payload = { userID: newPerson.getPersonUserID };
 
     try {
@@ -70,12 +72,14 @@ async function requestDatabaseItems(){
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        const data = await response.json();
-        newPerson.setPersonUserID = data.userID;
 
-        if (response.status === 201) {
-            setCookie('myCookieName', data.cookieValue, 365);
+        const data = await response.json();
+
+        if (!data.toDoList) {
+            return; 
         }
+
+        console.log(data.toDoList);
 
     } catch (error) {
         console.error('Error:', error);
@@ -83,7 +87,8 @@ async function requestDatabaseItems(){
 }
 
 function initializePage(){
-    userAuthentication()
+    userAuthentication().then(() => 
+    requestDatabaseItems())
 }
 
 window.addEventListener('DOMContentLoaded', (event) => {

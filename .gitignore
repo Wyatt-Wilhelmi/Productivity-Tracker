@@ -1,6 +1,5 @@
 node_modules
 .env
-netlify/functions/database_items.js
 playground-2.mongodb.js
 
 # Local Netlify folder
