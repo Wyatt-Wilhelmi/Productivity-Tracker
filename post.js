@@ -1,9 +1,11 @@
 // in your other file
 import {Person} from './utils.js';
-import { ToDoListItems } from './utils.js';
-
 let newPerson = new Person();
-let newToDoListItems = new Array(new ToDoListItems());
+let newToDoListItems = new Array();
+
+ export function getToDoListItems(){
+    return this.newToDoListItems;
+    }
 
 function getCookie(name) {
     let value = "; " + document.cookie;
@@ -38,7 +40,7 @@ function postFetch(url, payload = {}){
 
 
 async function userAuthentication() {
-    const url = 'https://sweet-panda-99d8a9.netlify.app/.netlify/functions/check_cookie';
+    const url = 'http://localhost:8888/.netlify/functions/check_cookie';
     const cookieValue = getCookie('myCookieName');
     const payload = { cookieValue: cookieValue };
 
@@ -62,7 +64,7 @@ async function userAuthentication() {
 }
 
 async function requestDatabaseItems(){
-    const url = 'https://sweet-panda-99d8a9.netlify.app/.netlify/functions/database_items';
+    const url = 'http://localhost:8888/.netlify/functions/database_items';
     const payload = { userID: newPerson.getPersonUserID };
 
     try {
@@ -75,20 +77,25 @@ async function requestDatabaseItems(){
 
         const data = await response.json();
 
+        newToDoListItems = data.toDoList;
+
         if (!data.toDoList) {
             return; 
         }
-
-        console.log(data.toDoList);
-
+    
     } catch (error) {
         console.error('Error:', error);
     }
 }
 
+async function populateToDoListText(day){
+    
+}
+
 function initializePage(){
     userAuthentication().then(() => 
-    requestDatabaseItems())
+    requestDatabaseItems()).then(() =>
+    console.log(newToDoListItems))
 }
 
 window.addEventListener('DOMContentLoaded', (event) => {
