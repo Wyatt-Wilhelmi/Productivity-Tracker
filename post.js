@@ -1,11 +1,7 @@
 // in your other file
 import {Person} from './utils.js';
 let newPerson = new Person();
-let newToDoListItems = new Array();
 
- export function getToDoListItems(){
-    return this.newToDoListItems;
-    }
 
 function getCookie(name) {
     let value = "; " + document.cookie;
@@ -40,7 +36,7 @@ function postFetch(url, payload = {}){
 
 
 async function userAuthentication() {
-    const url = 'http://localhost:8888/.netlify/functions/check_cookie';
+    const url = 'https://sweet-panda-99d8a9.netlify.app/.netlify/functions/check_cookie';
     const cookieValue = getCookie('myCookieName');
     const payload = { cookieValue: cookieValue };
 
@@ -64,7 +60,7 @@ async function userAuthentication() {
 }
 
 async function requestDatabaseItems(){
-    const url = 'http://localhost:8888/.netlify/functions/database_items';
+    const url = 'https://sweet-panda-99d8a9.netlify.app/.netlify/functions/database_items';
     const payload = { userID: newPerson.getPersonUserID };
 
     try {
@@ -77,11 +73,35 @@ async function requestDatabaseItems(){
 
         const data = await response.json();
 
-        newToDoListItems = data.toDoList;
+        let newToDoListItems = data.toDoList;
 
         if (!data.toDoList) {
             return; 
         }
+
+        const checklistMap = {};
+
+    for (const item of newToDoListItems) {
+      const listItem = document.createElement('li');
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.checked = item.completed;
+      const label = document.createElement('label');
+      label.textContent = item.text;
+      listItem.appendChild(checkbox);
+      listItem.appendChild(label);
+
+      if (!checklistMap[item.day]) {
+        checklistMap[item.day] = document.createElement('ul');
+      }
+      checklistMap[item.day].appendChild(listItem);
+    }
+
+    // Append checklists to respective containers
+    for (const day in checklistMap) {
+      const container = document.getElementById('day' + day);
+      container.appendChild(checklistMap[day]);
+    }
     
     } catch (error) {
         console.error('Error:', error);
@@ -94,8 +114,7 @@ async function populateToDoListText(day){
 
 function initializePage(){
     userAuthentication().then(() => 
-    requestDatabaseItems()).then(() =>
-    console.log(newToDoListItems))
+    requestDatabaseItems())
 }
 
 window.addEventListener('DOMContentLoaded', (event) => {

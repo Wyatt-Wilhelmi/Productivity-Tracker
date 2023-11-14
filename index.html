@@ -45,11 +45,20 @@
             </nav>
             <div class="flex flex-wrap flex-col justify-center gap-4 px-1 sm:px-4 w-full xl:gap-8">
                 <div x-data="weekDays()">
-                    <template x-for="day in days" :key="day">
+                    <template x-for="day in days" :key="day.index">
                         <div class="bg-white dark:bg-gray-500 dark:text-slate-50 shadow-md hover:shadow-lg rounded-lg p-4 my-2 xl:p-6 font-Lato">
                             <div class="flex justify-between">
-                                <h2 class="text-lg md:text-2xl lg:text-3xl xl:text-4xl font-black mb-2" x-text="day"></h2>
+                                <h2 class="text-lg md:text-2xl lg:text-3xl xl:text-4xl font-black mb-2" x-text="day.day"></h2>
                             </div>
+                            <div x-bind:id="'day' + day.index" class="flex justify-center class="text-accent-700 focus:ring-accent-700 ring-offset-white dark:text-accent-400 dark:focus:ring-accent-400 ring-offset-dark"">
+                                
+                            </div>
+                            <!-- <template x-for="item in databaseItems" :key="item.day" x-if="item.day = day.index">
+                                <div>
+                                    <input type="checkbox" x-model="item.completed">
+                                    <span x-text="item.text"></span>
+                                </div>
+                            </template> -->
                             <div class="flex justify-center">
                                 <button>
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 dark:text-slate-50 h-6">
