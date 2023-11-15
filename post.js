@@ -79,37 +79,74 @@ async function requestDatabaseItems(){
             return; 
         }
 
+        console.log(newToDoListItems);
+
         const checklistMap = {};
 
-    for (const item of newToDoListItems) {
-      const listItem = document.createElement('li');
-      const checkbox = document.createElement('input');
-      checkbox.type = 'checkbox';
-      checkbox.checked = item.completed;
-      const label = document.createElement('label');
-      label.textContent = item.text;
-      listItem.appendChild(checkbox);
-      listItem.appendChild(label);
+        for (const item of newToDoListItems) {
+            // Create the main wrapper div
+            const wrapperDiv = document.createElement('div');
+            wrapperDiv.className = 'checkbox-wrapper-52';
 
-      if (!checklistMap[item.day]) {
-        checklistMap[item.day] = document.createElement('ul');
-      }
-      checklistMap[item.day].appendChild(listItem);
-    }
+            // Create the label that wraps everything
+            const itemLabel = document.createElement('label');
+            itemLabel.className = 'item';
 
-    // Append checklists to respective containers
-    for (const day in checklistMap) {
-      const container = document.getElementById('day' + day);
-      container.appendChild(checklistMap[day]);
-    }
+            // Create the hidden checkbox
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.id = `todo-${item._id}`; // Assuming each item has a unique ID
+            checkbox.className = 'hidden';
+            checkbox.checked = item.completed;
+
+            // Create the custom checkbox
+            const customCheckboxLabel = document.createElement('label');
+            customCheckboxLabel.htmlFor = `todo-${item._id}`;
+            customCheckboxLabel.className = 'cbx';
+
+            // Create the SVG for the custom checkbox
+            const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            svg.setAttribute('width', '14px');
+            svg.setAttribute('height', '12px');
+            svg.setAttribute('viewBox', '0 0 14 12');
+            const polyline = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
+            polyline.setAttribute('points', '1 7.6 5 11 13 1');
+            svg.appendChild(polyline);
+
+            // Append the SVG to the custom checkbox label
+            customCheckboxLabel.appendChild(svg);
+
+            // Create the text label
+            const textLabel = document.createElement('label');
+            textLabel.htmlFor = `todo-${item._id}`;
+            textLabel.className = 'cbx-lbl';
+            textLabel.textContent = item.text;
+
+            // Append elements to item label
+            itemLabel.appendChild(checkbox);
+            itemLabel.appendChild(customCheckboxLabel);
+            itemLabel.appendChild(textLabel);
+
+            // Append item label to wrapper div
+            wrapperDiv.appendChild(itemLabel);
+
+            // Append the wrapper div to the correct day list
+        if (!checklistMap[item.day]) {
+            checklistMap[item.day] = document.createElement('ul');
+        }
+        checklistMap[item.day].appendChild(wrapperDiv);
+}
+
+// Append checklists to respective containers
+for (const day in checklistMap) {
+    const container = document.getElementById('day' + day);
+    container.appendChild(checklistMap[day]);
+}
+
     
     } catch (error) {
         console.error('Error:', error);
     }
-}
-
-async function populateToDoListText(day){
-    
 }
 
 function initializePage(){
@@ -117,9 +154,6 @@ function initializePage(){
     requestDatabaseItems())
 }
 
-window.addEventListener('DOMContentLoaded', (event) => {
-    initializePage();
-});
-
+initializePage();
 
 //Edit, update, delete Handler here

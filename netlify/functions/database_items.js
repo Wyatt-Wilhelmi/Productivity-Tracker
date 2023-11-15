@@ -35,7 +35,7 @@ module.exports.handler = async function(event, context) {
 
     let inputUserID = userID;
 
-    const newToDoList = await ToDo.find({ user_id: inputUserID }, 'text day completed -_id').sort({day: 1});
+    const newToDoList = await ToDo.find({ user_id: inputUserID }, '_id text day completed').sort({day: 1});
 
       return {
         statusCode: 200,
