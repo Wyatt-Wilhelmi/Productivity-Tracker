@@ -38,5 +38,27 @@ function weekDays() {
     };
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+    const addItemListeners = ['addItemDay1', 'addItemDay2', 'addItemDay3', 'addItemDay4', 'addItemDay5', 'addItemDay6', 'addItemDay7'];
+
+    for (let i = 0; i < addItemListeners.length; i++) {
+        let addItemButton = document.getElementById(addItemListeners[i]);
+        if (addItemButton) {
+            addItemButton.addEventListener('click', function(event) {
+                // Your event handling logic here
+               let inputSection = document.getElementById('inputSection' + (i + 1));
+
+               if (inputSection) {
+                   inputSection.classList.remove('hidden');
+                   inputSection.classList.add('flex');
+               }
+            });
+        }
+    }
+});
+
+
+
+
     
 

@@ -1,6 +1,8 @@
 // in your other file
 import {Person} from './utils.js';
 let newPerson = new Person();
+let newToDoListItems = [];
+let readyState = false;
 
 
 function getCookie(name) {
@@ -73,20 +75,28 @@ async function requestDatabaseItems(){
 
         const data = await response.json();
 
-        let newToDoListItems = data.toDoList;
-
         if (!data.toDoList) {
             return; 
         }
 
-        console.log(newToDoListItems);
+        newToDoListItems = data.toDoList;
 
-        const checklistMap = {};
+        
+
+    
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+function populateToDoListItems(){
+    const checklistMap = {};
 
         for (const item of newToDoListItems) {
             // Create the main wrapper div
             const wrapperDiv = document.createElement('div');
             wrapperDiv.className = 'checkbox-wrapper-52';
+            wrapperDiv.classList.add('text-lg');
 
             // Create the label that wraps everything
             const itemLabel = document.createElement('label');
@@ -137,21 +147,29 @@ async function requestDatabaseItems(){
         checklistMap[item.day].appendChild(wrapperDiv);
 }
 
-// Append checklists to respective containers
-for (const day in checklistMap) {
-    const container = document.getElementById('day' + day);
-    container.appendChild(checklistMap[day]);
-}
+    // Append checklists to respective containers
+    for (const day in checklistMap) {
+        const container = document.getElementById('day' + day);
+        container.appendChild(checklistMap[day]);
+    }
 
-    
-    } catch (error) {
-        console.error('Error:', error);
+    if (document.readyState === "complete") {
+        const targetElement1 = document.getElementById('loader');
+        const targetElement2 = document.getElementById('main'); // Adjust the selector as needed
+        if (targetElement1) {
+            targetElement1.classList.remove('flex');
+            targetElement1.classList.add('hidden');
+        }
+        if (targetElement2) {
+            targetElement2.classList.remove('hidden');
+        }
     }
 }
 
 function initializePage(){
     userAuthentication().then(() => 
-    requestDatabaseItems())
+    requestDatabaseItems()).then(() =>
+    document.addEventListener('DOMContentLoaded', populateToDoListItems()))
 }
 
 initializePage();
