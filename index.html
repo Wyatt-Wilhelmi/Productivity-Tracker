@@ -61,23 +61,30 @@
                             <div class="flex flex-wrap justify-between items-center mb-2">
                                 <h2 class="text-lg md:text-2xl lg:text-3xl xl:text-4xl font-black" x-text="day.day"></h2>
                                 <button x-bind:id="'addItemDay' + day.index" class="flex items-center justify-center w-8 h-8 dark:hover:bg-stone-50 dark:hover:text-black hover:bg-gray-900 hover:text-white rounded-full">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 dark:text-slate-50 h-6">
+                                    <svg x-bind:id="'addItemPlus' + day.index" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 dark:text-slate-50 h-6">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>                                   
+                                    </svg>
+                                    <svg x-bind:id="'addItemCancel' + day.index" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 hidden h-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                    </svg>                                                                         
                                 </button>
                             </div>
-                            <div x-bind:id="'day' + day.index" class="w-full flex justify-center" class="text-accent-700 focus:ring-accent-700 ring-offset-white dark:text-accent-400 dark:focus:ring-accent-400 ring-offset-dark">
+                            <div x-bind:id="'day' + day.index" class="w-full flex text-xl justify-center">
                                 
                             </div>
                             <div x-bind:id="'inputSection' + day.index" class="hidden justify-center">
-                                <input type="text" name="price" x-bind:id="'inputItem' + day.index" class="w-1/2 rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="Add To-Do-List item">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                                </svg>                                  
+                                <input type="text" name="price" x-bind:id="'inputBox' + day.index" class="w-1/2 rounded-md py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="Add To-Do-List item">
+                                <button x-bind:id="'submitInput' + day.index" class="p-2 mx-1 bg-transparent rounded-full hover:bg-gray-900 hover:text-white dark:hover:bg-stone-50 dark:hover:text-black">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                                    </svg> 
+                                </button>                                                    
                             </div>
                         </div>
                     </template>
                 </div>
+
+                <!-- remove alpine from addItem, fix submitInput not hiding -->
                 
                 <!-- <div x-data="{mondayCaret: false, addingItem: false}"  @click="mondayCaret = !mondayCaret" x-on:click.outside="mondayCaret = false" class="bg-white dark:bg-gray-500 dark:text-slate-50 shadow-md hover:shadow-lg rounded-lg p-4 xl:p-6 font-Lato">
                     <div class="flex justify-between">
@@ -89,7 +96,7 @@
                         </a>
                     </div>
                     x-data="checklistComponent(Monday)"
-                    <div x-data="{ array: newToDoListItems}" @click.stop x-show="mondayCaret" x-transition class="flex justify-center items-center flex-col"> <!-- Added flex-col for vertical stacking 
+                    <div x-data="{ array: newToDoListItems}" @click.stop x-show="mondayCaret" x-transition class="flex justify-center items-center flex-col"> 
                         <ul id="checklistMonday" x-ref="checklistMonday">
                             item.id should replace item when database is added
                             <template x-for="item in array" :key="item">
