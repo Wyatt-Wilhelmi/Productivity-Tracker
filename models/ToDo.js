@@ -1,3 +1,4 @@
+const { ObjectId } = require('mongodb');
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const SchemaTypes = mongoose.SchemaTypes;
@@ -17,7 +18,7 @@ const TodoSchema = new Schema({
     default: false
   },
   user_id: {
-    type: String,
+    type: ObjectId,
     required: true
   }
 });

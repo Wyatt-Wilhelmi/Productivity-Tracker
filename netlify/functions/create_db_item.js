@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const { ObjectId } = require('mongodb');
 require('dotenv').config();
 
 const ToDo = require('../../models/ToDo.js');
@@ -32,15 +31,13 @@ module.exports.handler = async function(event, context) {
   }
 
   try {
-    const { userID } = JSON.parse(event.body);
 
-    let inputUserID = userID;
+    const { newDatabaseItem } = JSON.parse(event.body);
 
-    const newToDoList = await ToDo.find({ user_id: inputUserID}, '_id text day completed').sort({day: 1});
-
+    const newToDoList = new ToDo({text: newDatabaseItem.text, day: newDatabaseItem.day, user_id: newDatabaseItem.userID});
+    await newToDoList.save();
       return {
-        statusCode: 200,
-        body: JSON.stringify({toDoList: newToDoList})
+        statusCode: 201
       };
 
   } catch (e) {

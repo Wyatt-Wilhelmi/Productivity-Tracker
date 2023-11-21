@@ -1,7 +1,9 @@
 // in your other file
 import {Person} from './utils.js';
+import { ToDoListItems } from './utils.js';
 
 let newPerson = new Person();
+
 let newToDoListItems = [];
 const checklistMap = {};
 
@@ -150,8 +152,19 @@ function populateToDoListItems(){
 
 }
 
-async function handleDatabaseItems(action, payload){
+async function handleAddingDatabaseItems(payload){
+    const url = 'https://sweet-panda-99d8a9.netlify.app/.netlify/functions/create_db_item';
 
+    try {
+        const response = await postFetch(url, payload);
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+    } catch (error) {
+        console.error('Error:', error);
+    }
 }
 
 
@@ -262,12 +275,22 @@ function initializeEventListners(){
                         checklistMap[day] = document.createElement('ul');
 
                         const container = document.getElementById('day' + day);
-                        container.appendChild(checklistMap[day]);
+                        container.appendChild(checklistMap[day]);    
                     }
 
                     if(checklistMap[day]){
                         checklistMap[day].appendChild(wrapperDiv);
                     }
+
+                    const payload = {
+                        newDatabaseItem: {
+                            text: inputValue,
+                            day: day, 
+                            userID: newPerson.getPersonUserID
+                        }
+                    }
+
+                    handleAddingDatabaseItems(payload);
 
                     inputBox.value = '';
                     
@@ -344,6 +367,16 @@ function initializeEventListners(){
                 if(checklistMap[day]){
                     checklistMap[day].appendChild(wrapperDiv);
                 }
+
+                const payload = {
+                    newDatabaseItem: {
+                        text: inputValue,
+                        day: day, 
+                        userID: newPerson.getPersonUserID
+                    }
+                }
+
+                handleAddingDatabaseItems(payload);
 
                 inputBox.value = '';
                 
