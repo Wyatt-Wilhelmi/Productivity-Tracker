@@ -14,7 +14,6 @@ function getCookie(name) {
     return null;
 }
 
-// Function to send a POST request
 function setCookie(name, value, days) {
     let expires = "";
     if (days) {
@@ -36,7 +35,6 @@ function postFetch(url, payload = {}){
 
     return response;
 }
-
 
 
 async function userAuthentication() {
@@ -62,7 +60,7 @@ async function userAuthentication() {
         console.error('Error:', error);
     }
 }
-
+// https://sweet-panda-99d8a9.netlify.app
 async function requestDatabaseItems(){
     const url ='https://sweet-panda-99d8a9.netlify.app/.netlify/functions/database_items';
     const payload = { userID: newPerson.getPersonUserID };
@@ -87,72 +85,7 @@ async function requestDatabaseItems(){
     }
 }
 
-function populateToDoListItems(){
-
-        for (const item of newToDoListItems) {
-            // Create the main wrapper div
-            const wrapperDiv = document.createElement('div');
-            wrapperDiv.className = 'checkbox-wrapper-52';
-            // wrapperDiv.classList.add('text-xl');
-
-            // Create the label that wraps everything
-            const itemLabel = document.createElement('label');
-            itemLabel.className = 'item';
-
-            // Create the hidden checkbox
-            const checkbox = document.createElement('input');
-            checkbox.type = 'checkbox';
-            checkbox.id = `todo-${item._id}`; // Assuming each item has a unique ID
-            checkbox.className = 'hidden';
-            checkbox.checked = item.completed;
-
-            // Create the custom checkbox
-            const customCheckboxLabel = document.createElement('label');
-            customCheckboxLabel.htmlFor = `todo-${item._id}`;
-            customCheckboxLabel.className = 'cbx';
-
-            // Create the SVG for the custom checkbox
-            const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-            svg.setAttribute('width', '14px');
-            svg.setAttribute('height', '12px');
-            svg.setAttribute('viewBox', '0 0 14 12');
-            const polyline = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
-            polyline.setAttribute('points', '1 7.6 5 11 13 1');
-            svg.appendChild(polyline);
-
-            // Append the SVG to the custom checkbox label
-            customCheckboxLabel.appendChild(svg);
-
-            // Create the text label
-            const textLabel = document.createElement('label');
-            textLabel.htmlFor = `todo-${item._id}`;
-            textLabel.className = 'cbx-lbl';
-            textLabel.textContent = item.text;
-
-            // Append elements to item label
-            itemLabel.appendChild(checkbox);
-            itemLabel.appendChild(customCheckboxLabel);
-            itemLabel.appendChild(textLabel);
-
-            // Append item label to wrapper div
-            wrapperDiv.appendChild(itemLabel);
-
-            // Append the wrapper div to the correct day list
-        if (!checklistMap[item.day]) {
-            checklistMap[item.day] = document.createElement('ul');
-        }
-        checklistMap[item.day].appendChild(wrapperDiv);
-}
-
-    // Append checklists to respective containers
-    for (const day in checklistMap) {
-        const container = document.getElementById('day' + day);
-        container.appendChild(checklistMap[day]);
-    }
-
-}
-
-async function handleAddingDatabaseItems(payload){
+async function addingDatabaseItems(payload){
     const url = 'https://sweet-panda-99d8a9.netlify.app/.netlify/functions/create_db_item';
 
     try {
@@ -166,6 +99,104 @@ async function handleAddingDatabaseItems(payload){
         console.error('Error:', error);
     }
 }
+
+async function handleUpdatingDatabaseItems(payload){
+    const url = 'https://sweet-panda-99d8a9.netlify.app/.netlify/functions/update_db_item';
+
+    try {
+        const response = await postFetch(url, payload);
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+function populateToDoListItems(){
+
+    for (const item of newToDoListItems) {
+        // Create the main wrapper div
+        const wrapperDiv = document.createElement('div');
+        wrapperDiv.className = 'checkbox-wrapper-52';
+        // wrapperDiv.classList.add('text-xl');
+
+        // Create the label that wraps everything
+        const itemLabel = document.createElement('label');
+        itemLabel.className = 'item';
+
+        // Create the hidden checkbox
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.id = `todo-${item._id}`; // Assuming each item has a unique ID
+        checkbox.className = 'hidden';
+        checkbox.checked = item.completed;
+
+        checkbox.addEventListener('change', function(event) {
+            let listItemId = item._id;
+            let isChecked = !item.completed;
+
+            const payload = {
+                updateDatabaseItem: {
+                    'listItemId': listItemId,
+                    'target': "completed",
+                    'value': isChecked
+                }
+            }
+
+            handleUpdatingDatabaseItems(payload);
+
+        });
+
+        // Create the custom checkbox
+        const customCheckboxLabel = document.createElement('label');
+        customCheckboxLabel.htmlFor = `todo-${item._id}`;
+        customCheckboxLabel.className = 'cbx';
+
+        // Create the SVG for the custom checkbox
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.setAttribute('width', '14px');
+        svg.setAttribute('height', '12px');
+        svg.setAttribute('viewBox', '0 0 14 12');
+        const polyline = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
+        polyline.setAttribute('points', '1 7.6 5 11 13 1');
+        svg.appendChild(polyline);
+
+        // Append the SVG to the custom checkbox label
+        customCheckboxLabel.appendChild(svg);
+
+        // Create the text label
+        const textLabel = document.createElement('label');
+        textLabel.htmlFor = `todo-${item._id}`;
+        textLabel.className = 'cbx-lbl';
+        textLabel.textContent = item.text;
+
+        // Append elements to item label
+        itemLabel.appendChild(checkbox);
+        itemLabel.appendChild(customCheckboxLabel);
+        itemLabel.appendChild(textLabel);
+
+        // Append item label to wrapper div
+        wrapperDiv.appendChild(itemLabel);
+
+        // Append the wrapper div to the correct day list
+            if (!checklistMap[item.day]) {
+                checklistMap[item.day] = document.createElement('ul');
+            }
+        checklistMap[item.day].appendChild(wrapperDiv);
+    }
+
+    // Append checklists to respective containers
+    for (const day in checklistMap) {
+        const container = document.getElementById('day' + day);
+        container.appendChild(checklistMap[day]);
+    }
+
+}
+
+
 
 
 
@@ -184,15 +215,13 @@ function initializeEventListners(){
         let addItemButton = document.getElementById(addItemListeners[i]);
         let addItemPlus = document.getElementById(addItemPlusListeners[i]);
         let addItemCancel = document.getElementById(addItemCancelListener[i]);
+        let inputSection = document.getElementById(inputSectionListners[i]);
         if (addItemButton) {
             addItemButton.addEventListener('click', function(event) {
                 // Your event handling logic here
 
                  addItemPlus.classList.toggle('hidden');
-                 addItemCancel.classList.toggle('hidden');
-
-
-                let inputSection = document.getElementById(inputSectionListners[i]);
+                 addItemCancel.classList.toggle('hidden');               
 
                 if (inputSection) {
                     inputSection.classList.toggle('hidden');
@@ -215,61 +244,61 @@ function initializeEventListners(){
                 // Your event handling logic here
                 if(event.key === 'Enter'){
 
-                    addItemPlus.classList.toggle('hidden');
-                    addItemCancel.classList.toggle('hidden');
+                addItemPlus.classList.toggle('hidden');
+                addItemCancel.classList.toggle('hidden');
 
                     if(inputSection){
                         inputSection.classList.toggle('flex');
                         inputSection.classList.toggle('hidden');
                     }                            
                     
-                    newItemCount++;
+                newItemCount++;
 
-                    const inputValue = inputBox.value;
+                const inputValue = inputBox.value;
 
-                    const wrapperDiv = document.createElement('div');
-                    wrapperDiv.className = 'checkbox-wrapper-52';
-        
-                    // Create the label that wraps everything
-                    const itemLabel = document.createElement('label');
-                    itemLabel.className = 'item';
-        
-                    // Create the hidden checkbox
-                    const checkbox = document.createElement('input');
-                    checkbox.type = 'checkbox';
-                    checkbox.id = `todo-${newItemCount}`; // Assuming each item has a unique ID
-                    checkbox.className = 'hidden';
-        
-                    // Create the custom checkbox
-                    const customCheckboxLabel = document.createElement('label');
-                    customCheckboxLabel.htmlFor = `todo-${newItemCount}`;
-                    customCheckboxLabel.className = 'cbx';
-        
-                    // Create the SVG for the custom checkbox
-                    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-                    svg.setAttribute('width', '14px');
-                    svg.setAttribute('height', '12px');
-                    svg.setAttribute('viewBox', '0 0 14 12');
-                    const polyline = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
-                    polyline.setAttribute('points', '1 7.6 5 11 13 1');
-                    svg.appendChild(polyline);
-        
-                    // Append the SVG to the custom checkbox label
-                    customCheckboxLabel.appendChild(svg);
-        
-                    // Create the text label
-                    const textLabel = document.createElement('label');
-                    textLabel.htmlFor = `todo-${newItemCount}`;
-                    textLabel.className = 'cbx-lbl';
-                    textLabel.textContent = inputValue;
-        
-                    // Append elements to item label
-                    itemLabel.appendChild(checkbox);
-                    itemLabel.appendChild(customCheckboxLabel);
-                    itemLabel.appendChild(textLabel);
-        
-                    // Append item label to wrapper div
-                    wrapperDiv.appendChild(itemLabel);
+                const wrapperDiv = document.createElement('div');
+                wrapperDiv.className = 'checkbox-wrapper-52';
+    
+                // Create the label that wraps everything
+                const itemLabel = document.createElement('label');
+                itemLabel.className = 'item';
+    
+                // Create the hidden checkbox
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.id = `todo-${newItemCount}`; // Assuming each item has a unique ID
+                checkbox.className = 'hidden';
+    
+                // Create the custom checkbox
+                const customCheckboxLabel = document.createElement('label');
+                customCheckboxLabel.htmlFor = `todo-${newItemCount}`;
+                customCheckboxLabel.className = 'cbx';
+    
+                // Create the SVG for the custom checkbox
+                const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+                svg.setAttribute('width', '14px');
+                svg.setAttribute('height', '12px');
+                svg.setAttribute('viewBox', '0 0 14 12');
+                const polyline = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
+                polyline.setAttribute('points', '1 7.6 5 11 13 1');
+                svg.appendChild(polyline);
+    
+                // Append the SVG to the custom checkbox label
+                customCheckboxLabel.appendChild(svg);
+    
+                // Create the text label
+                const textLabel = document.createElement('label');
+                textLabel.htmlFor = `todo-${newItemCount}`;
+                textLabel.className = 'cbx-lbl';
+                textLabel.textContent = inputValue;
+    
+                // Append elements to item label
+                itemLabel.appendChild(checkbox);
+                itemLabel.appendChild(customCheckboxLabel);
+                itemLabel.appendChild(textLabel);
+    
+                // Append item label to wrapper div
+                wrapperDiv.appendChild(itemLabel);
 
                     if(!checklistMap[day]){
                         checklistMap[day] = document.createElement('ul');
@@ -282,17 +311,17 @@ function initializeEventListners(){
                         checklistMap[day].appendChild(wrapperDiv);
                     }
 
-                    const payload = {
-                        newDatabaseItem: {
-                            text: inputValue,
-                            day: day, 
-                            userID: newPerson.getPersonUserID
-                        }
+                const payload = {
+                    newDatabaseItem: {
+                        text: inputValue,
+                        day: day, 
+                        userID: newPerson.getPersonUserID
                     }
+                }
 
-                    handleAddingDatabaseItems(payload);
+                addingDatabaseItems(payload);
 
-                    inputBox.value = '';
+                inputBox.value = '';
                     
                 }
             });
@@ -376,7 +405,7 @@ function initializeEventListners(){
                     }
                 }
 
-                handleAddingDatabaseItems(payload);
+                addingDatabaseItems(payload);
 
                 inputBox.value = '';
                 
