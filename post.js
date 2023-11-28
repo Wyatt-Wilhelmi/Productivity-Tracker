@@ -6,6 +6,7 @@ let newPerson = new Person();
 
 let newToDoListItems = [];
 const checklistMap = {};
+let buttonMap = {};
 
 function getCookie(name) {
     let value = "; " + document.cookie;
@@ -36,7 +37,7 @@ function postFetch(url, payload = {}){
     return response;
 }
 
-
+//https://sweet-panda-99d8a9.netlify.app
 async function userAuthentication() {
     const url ='https://sweet-panda-99d8a9.netlify.app/.netlify/functions/check_cookie';
     const cookieValue = getCookie('myCookieName');
@@ -115,6 +116,44 @@ async function handleUpdatingDatabaseItems(payload){
     }
 }
 
+let newButtonCount = 1;
+
+function createButtonContainer(day) {
+    let buttonList = [];
+    let mapDay = 1;
+
+    const containerDiv = document.createElement('div');
+    containerDiv.className = 'button-container max-w-fit dark:bg-stone-50 dark:text-black bg-gray-900 rounded-md text-white hidden';
+
+    // Add the buttons as in your example
+
+    
+    // Button 1
+    const button1 = document.createElement('button');
+    button1.id = 'editButton' + newButtonCount;
+    // Set the attributes and innerHTML for button1 as in your example
+    // ...
+
+    // Button 2
+    const button2 = document.createElement('button');
+    button2.id = 'deleteButton' + newButtonCount;
+    newButtonCount++;
+
+    buttonList.push(button1.id, button2.id);
+
+    // Set the attributes and innerHTML for button2 as in your example
+    // ...
+    if (mapDay != day) {
+        buttonMap[mapDay] = buttonList;
+        mapDay = day;
+    }
+
+    containerDiv.appendChild(button1);
+    containerDiv.appendChild(button2);
+
+    return containerDiv;
+}
+
 function populateToDoListItems(){
 
     for (const item of newToDoListItems) {
@@ -180,6 +219,9 @@ function populateToDoListItems(){
 
         // Append item label to wrapper div
         wrapperDiv.appendChild(itemLabel);
+
+        const buttonContainer = createButtonContainer(item.day);
+        wrapperDiv.appendChild(buttonContainer);
 
         // Append the wrapper div to the correct day list
             if (!checklistMap[item.day]) {
