@@ -116,12 +116,12 @@
     transition: all 0.4s ease;
   }
   .checkbox-wrapper-52:hover .button-container {
-    display: block; /* or 'flex' depending on your layout */
-}
-.button-container {
-    display: none;
-    /* Additional styling for positioning to the right, etc. */
-}
+    display: block;
+    /* or 'flex' depending on your layout */
+  }
+  .button-container {
+      display: none;
+  }
 
 
   @keyframes ldio-x75khvfp78 {
