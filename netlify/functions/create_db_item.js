@@ -36,8 +36,11 @@ module.exports.handler = async function(event, context) {
 
     const newToDoList = new ToDo({text: newDatabaseItem.text, day: newDatabaseItem.day, user_id: newDatabaseItem.userID});
     await newToDoList.save();
+
+
       return {
-        statusCode: 201
+        statusCode: 200,
+        body: JSON.stringify({ id: newToDoList._id })
       };
 
   } catch (e) {

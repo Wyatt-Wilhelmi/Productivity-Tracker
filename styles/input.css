@@ -121,8 +121,8 @@
   .button-container {
       display: none;
       position: absolute;
-      top: -29px;
-      right: -48px;
+      top: -20px;
+      right: 50px;
   }
   .checkbox-wrapper-52:hover .button-container {
     display: block;
