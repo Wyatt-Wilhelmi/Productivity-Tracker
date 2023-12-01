@@ -115,12 +115,17 @@
     width: 100%;
     transition: all 0.4s ease;
   }
-  .checkbox-wrapper-52:hover .button-container {
-    display: block;
-    /* or 'flex' depending on your layout */
+  .checkbox-wrapper-52{
+    position: relative;
   }
   .button-container {
       display: none;
+      position: absolute;
+      top: -29px;
+      right: -48px;
+  }
+  .checkbox-wrapper-52:hover .button-container {
+    display: block;
   }
 
 
