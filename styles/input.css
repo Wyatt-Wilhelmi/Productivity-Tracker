@@ -121,9 +121,14 @@
   .button-container {
       display: none;
       position: absolute;
-      top: -20px;
-      right: 50px;
+      top: -15px;
+      right: -20px;
   }
+  /* @media (hover: hover) {
+    .checkbox-wrapper-52:hover .button-container {
+      display: block;
+    }
+  } */
   .checkbox-wrapper-52:hover .button-container {
     display: block;
   }

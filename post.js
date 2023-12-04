@@ -61,7 +61,7 @@ async function userAuthentication() {
         console.error('Error:', error);
     }
 }
-// https://sweet-panda-99d8a9.netlify.app
+// https://sweet-panda-99d8a9.netlify.app http://localhost:8888
 async function requestDatabaseItems(){
     const url ='https://sweet-panda-99d8a9.netlify.app/.netlify/functions/database_items';
     const payload = { userID: newPerson.getPersonUserID };
@@ -121,6 +121,21 @@ async function handleUpdatingDatabaseItems(payload){
     }
 }
 
+async function deletingDatabaseItems(payload){
+    const url = 'https://sweet-panda-99d8a9.netlify.app/.netlify/functions/delete_db_item';
+
+    try {
+        const response = await postFetch(url, payload);
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
 let newButtonCount = 1;
 
 function createButtonContainer(day, itemID, textLabel) {
@@ -128,6 +143,7 @@ function createButtonContainer(day, itemID, textLabel) {
 
     const containerDiv = document.createElement('div');
     containerDiv.className = 'button-container mx-1 max-w-fit dark:bg-gray-900 bg-stone-200 rounded-md';
+    containerDiv.id = itemID;
 
     // Add the buttons as in your example
 
@@ -148,6 +164,18 @@ function createButtonContainer(day, itemID, textLabel) {
 
         const editSubmitButton = document.getElementById('editSubmitInput' + day);
 
+        button1.addEventListener('keyup', function(event){
+            if(event.key === 'Escape'){
+                if(editInputSection){
+                    editInputSection.classList.toggle('flex');
+                    editInputSection.classList.toggle('hidden');
+                }
+        
+                editInputBox.value = '';
+            }
+            
+        })
+
         if(editInputSection){
             editInputSection.classList.toggle('hidden');
             editInputSection.classList.toggle('flex');
@@ -156,6 +184,14 @@ function createButtonContainer(day, itemID, textLabel) {
         if (editInputBox) {
             editInputBox.addEventListener('keyup', function(event) {           
                 // Your event handling logic here
+                if(event.key === 'Escape'){
+                    if(editInputSection){
+                        editInputSection.classList.toggle('flex');
+                        editInputSection.classList.toggle('hidden');
+                    }
+
+                    editInputBox.value = '';
+                }
                 if(event.key === 'Enter'){
 
                     if(editInputSection){
@@ -216,6 +252,8 @@ function createButtonContainer(day, itemID, textLabel) {
         } 
         
     })
+
+    
     // Set the attributes and innerHTML for button1 as in your example
     // ...
 
@@ -226,6 +264,22 @@ function createButtonContainer(day, itemID, textLabel) {
     button2.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
         <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
     </svg>`;
+
+    button2.addEventListener('click', function(event){
+        let listItemId = itemID;
+        let parentDiv = textLabel.closest('div');
+
+        const payload = {
+            updateDatabaseItem: {
+                'listItemId': listItemId
+            }
+        }
+
+        deletingDatabaseItems(payload);
+
+        parentDiv.remove();
+    });
+
     newButtonCount++;
 
     buttonList.push(button1.id, button2.id);
@@ -236,13 +290,26 @@ function createButtonContainer(day, itemID, textLabel) {
     return containerDiv;
 }
 
+// function isMobileDevice() {
+//     if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
+//         // true for mobile device
+//         return true;
+//       }else{
+//         // false for not mobile device
+//         return false;
+//       }
+// }
+
 function populateToDoListItems(){
 
     for (const item of newToDoListItems) {
         // Create the main wrapper div
         const wrapperDiv = document.createElement('div');
-        wrapperDiv.className = 'checkbox-wrapper-52 self-start w-auto';
+        wrapperDiv.className = 'checkbox-wrapper-52 hover:bg-gray-50 hover:dark:bg-gray-600 pl-2 rounded-md';
         // wrapperDiv.classList.add('text-xl');
+        
+           
+        
 
         // Create the label that wraps everything
         const itemLabel = document.createElement('label');
@@ -303,6 +370,25 @@ function populateToDoListItems(){
         wrapperDiv.appendChild(itemLabel);
 
         const buttonContainer = createButtonContainer(item.day,item._id,textLabel);
+
+        // if (isMobileDevice()) {
+        //     let timer;
+        //     let buttonContainerDiv = document.getElementById(item._id);
+    
+        //     wrapperDiv.addEventListener('touchstart', (e) => {
+        //         e.preventDefault(); // Prevents additional events like click
+        //         // Start a timer
+        //         timer = setTimeout(() => {
+        //             // Action to be performed after holding for specified time
+        //             buttonContainerDiv.className.toggle('block');
+        //         }, 1000); // 2000 milliseconds = 2 seconds
+        //     });
+    
+        //     wrapperDiv.addEventListener('touchend', () => {
+        //         // Clear the timer if the touch is released
+        //         clearTimeout(timer);
+        //     });
+        // }
         wrapperDiv.appendChild(buttonContainer);
 
         // Append the wrapper div to the correct day list
@@ -353,6 +439,19 @@ function initializeEventListners(){
                     inputSection.classList.toggle('flex');
                 }
             });
+            addItemButton.addEventListener('keyup', function(event) {
+                // Your event handling logic here
+                if(event.key === 'Escape'){
+                    addItemPlus.classList.toggle('hidden');
+                    addItemCancel.classList.toggle('hidden');               
+
+                if (inputSection) {
+                    inputSection.classList.toggle('hidden');
+                    inputSection.classList.toggle('flex');
+                }
+                }
+                 
+            });
         }
     }
 
@@ -367,6 +466,15 @@ function initializeEventListners(){
         if (inputBox) {
             inputBox.addEventListener('keyup', async function(event) {           
                 // Your event handling logic here
+                if(event.key === 'Escape'){
+                    if(inputSection){
+                        inputSection.classList.toggle('flex');
+                        inputSection.classList.toggle('hidden');
+                    }
+
+                    inputSection.value = '';
+                }
+
                 if(event.key === 'Enter'){
 
                 addItemPlus.classList.toggle('hidden');
