@@ -37,9 +37,9 @@ function postFetch(url, payload = {}){
     return response;
 }
 
-//https://sweet-panda-99d8a9.netlify.app
+//https://ww-prodtrack.netlify.app
 async function userAuthentication() {
-    const url ='https://sweet-panda-99d8a9.netlify.app/.netlify/functions/check_cookie';
+    const url ='https://ww-prodtrack.netlify.app/.netlify/functions/check_cookie';
     const cookieValue = getCookie('myCookieName');
     const payload = { cookieValue: cookieValue };
 
@@ -63,7 +63,7 @@ async function userAuthentication() {
 }
 // https://sweet-panda-99d8a9.netlify.app http://localhost:8888
 async function requestDatabaseItems(){
-    const url ='https://sweet-panda-99d8a9.netlify.app/.netlify/functions/database_items';
+    const url ='https://ww-prodtrack.netlify.app/.netlify/functions/database_items';
     const payload = { userID: newPerson.getPersonUserID };
 
     try {
@@ -87,7 +87,7 @@ async function requestDatabaseItems(){
 }
 
 async function addingDatabaseItems(payload){
-    const url = 'https://sweet-panda-99d8a9.netlify.app/.netlify/functions/create_db_item';
+    const url = 'https://ww-prodtrack.netlify.app/.netlify/functions/create_db_item';
 
     try {
         const response = await postFetch(url, payload);
@@ -107,7 +107,7 @@ async function addingDatabaseItems(payload){
 }
 
 async function handleUpdatingDatabaseItems(payload){
-    const url = 'https://sweet-panda-99d8a9.netlify.app/.netlify/functions/update_db_item';
+    const url = 'https://ww-prodtrack.netlify.app/.netlify/functions/update_db_item';
 
     try {
         const response = await postFetch(url, payload);
@@ -122,7 +122,7 @@ async function handleUpdatingDatabaseItems(payload){
 }
 
 async function deletingDatabaseItems(payload){
-    const url = 'https://sweet-panda-99d8a9.netlify.app/.netlify/functions/delete_db_item';
+    const url = 'https://ww-prodtrack.netlify.app/.netlify/functions/delete_db_item';
 
     try {
         const response = await postFetch(url, payload);
