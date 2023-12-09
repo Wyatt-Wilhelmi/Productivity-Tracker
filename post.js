@@ -509,6 +509,22 @@ function initializeEventListners(){
                 checkbox.type = 'checkbox';
                  // Assuming each item has a unique ID
                 checkbox.className = 'hidden';
+
+                checkbox.addEventListener('change', function(event) {
+                    let listItemId = item._id;
+                    let isChecked = !item.completed;
+        
+                    const payload = {
+                        updateDatabaseItem: {
+                            'listItemId': listItemId,
+                            'target': "completed",
+                            'value': isChecked
+                        }
+                    }
+        
+                    handleUpdatingDatabaseItems(payload);
+        
+                });
     
                 // Create the custom checkbox
                 const customCheckboxLabel = document.createElement('label');
@@ -603,6 +619,22 @@ function initializeEventListners(){
                 checkbox.type = 'checkbox';
                  // Assuming each item has a unique ID
                 checkbox.className = 'hidden';
+
+                checkbox.addEventListener('change', function(event) {
+                    let listItemId = item._id;
+                    let isChecked = !item.completed;
+        
+                    const payload = {
+                        updateDatabaseItem: {
+                            'listItemId': listItemId,
+                            'target': "completed",
+                            'value': isChecked
+                        }
+                    }
+        
+                    handleUpdatingDatabaseItems(payload);
+        
+                });
     
                 // Create the custom checkbox
                 const customCheckboxLabel = document.createElement('label');
