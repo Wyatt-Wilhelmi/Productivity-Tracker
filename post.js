@@ -511,7 +511,7 @@ function initializeEventListners(){
                 checkbox.className = 'hidden';
 
                 checkbox.addEventListener('change', function(event) {
-                    let listItemId = item._id;
+                    let listItemId = newItemID;
                     let isChecked = !item.completed;
         
                     const payload = {
@@ -621,7 +621,7 @@ function initializeEventListners(){
                 checkbox.className = 'hidden';
 
                 checkbox.addEventListener('change', function(event) {
-                    let listItemId = item._id;
+                    let listItemId = newItemID;
                     let isChecked = !item.completed;
         
                     const payload = {
