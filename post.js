@@ -498,7 +498,7 @@ function initializeEventListners(){
                 await addingDatabaseItems(payload);
 
                 const wrapperDiv = document.createElement('div');
-                wrapperDiv.className = 'checkbox-wrapper-52 self-start w-auto';
+                wrapperDiv.className = 'checkbox-wrapper-52 hover:bg-gray-50 hover:dark:bg-gray-600 pl-2 rounded-md';
     
                 // Create the label that wraps everything
                 const itemLabel = document.createElement('label');
@@ -608,7 +608,7 @@ function initializeEventListners(){
                 await addingDatabaseItems(payload);
 
                 const wrapperDiv = document.createElement('div');
-                wrapperDiv.className = 'checkbox-wrapper-52 self-start w-auto';
+                wrapperDiv.className = 'checkbox-wrapper-52 hover:bg-gray-50 hover:dark:bg-gray-600 pl-2 rounded-md';
     
                 // Create the label that wraps everything
                 const itemLabel = document.createElement('label');
