@@ -512,7 +512,7 @@ function initializeEventListners(){
 
                 checkbox.addEventListener('change', function(event) {
                     let listItemId = newItemID;
-                    let isChecked = !item.completed;
+                    let isChecked = !checkbox.isChecked;
         
                     const payload = {
                         updateDatabaseItem: {
@@ -622,7 +622,7 @@ function initializeEventListners(){
 
                 checkbox.addEventListener('change', function(event) {
                     let listItemId = newItemID;
-                    let isChecked = !item.completed;
+                    let isChecked = !checkbox.isChecked;
         
                     const payload = {
                         updateDatabaseItem: {
